@@ -64,4 +64,4 @@ jobs:
         LATEST_TAG=ghcr.io/${GITHUB_REPOSITORY@L}:latest
         echo "Pushing Docker images to GHCR: $VERSION_TAG and $LATEST_TAG"
         docker push $VERSION_TAG
-        docker push $LATEST_TAG
+        docker push $LATEST_TAG 
