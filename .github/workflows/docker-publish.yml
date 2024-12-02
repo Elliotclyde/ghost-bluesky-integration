@@ -60,8 +60,8 @@ jobs:
 
     - name: Push Docker images to GHCR
       run: |
-        VERSION_TAG=ghcr.io/${{ github.repository }}:${{ env.VERSION }}
-        LATEST_TAG=ghcr.io/${{ github.repository }}:latest
+        VERSION_TAG=ghcr.io/${{ github.repository.toLowerCase() }}:${{ env.VERSION }}
+        LATEST_TAG=ghcr.io/${{ github.repository.toLowerCase() }}:latest
         echo "Pushing Docker images to GHCR: $VERSION_TAG and $LATEST_TAG"
         docker push $VERSION_TAG
         docker push $LATEST_TAG
