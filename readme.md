@@ -36,7 +36,7 @@ docker run --name ghost-bluesky-integration \
 -e PASS=<your App Password> \
 -p 7969:7969 \
 --restart=unless-stopped \
-ghcr.io/Elliotclyde/ghost-bluesky-integration:latest
+ghcr.io/elliotclyde/ghost-bluesky-integration:latest
 ```
 
 Alternatively as a `docker-compose` file:
@@ -52,5 +52,5 @@ services:
     ports:
       - 7969:7969
     restart: unless-stopped
-    image: ghcr.io/Elliotclyde/ghost-bluesky-integration:latest
+    image: ghcr.io/elliotclyde/ghost-bluesky-integration:latest
 ```
