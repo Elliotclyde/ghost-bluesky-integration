@@ -1,0 +1,67 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Cache Node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      with:
+        version: latest
+
+    - name: Log in to GitHub Container Registry (GHCR)
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get version from package.json
+      id: get-version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Found version: $VERSION"
+
+    - name: Cache Docker layers
+      id: cache-docker
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-docker-${{ hashFiles('Dockerfile', 'package.json', 'package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-docker-
+
+    - name: Build Docker image
+      run: |
+        VERSION_TAG=ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+        LATEST_TAG=ghcr.io/${{ github.repository }}:latest
+        echo "Building Docker image with tags: $VERSION_TAG and $LATEST_TAG"
+        docker build \
+          --cache-from=type=local,src=/tmp/.buildx-cache \
+          -t $VERSION_TAG -t $LATEST_TAG .
+
+    - name: Push Docker images to GHCR
+      run: |
+        VERSION_TAG=ghcr.io/${{ github.repository }}:${{ env.VERSION }}
+        LATEST_TAG=ghcr.io/${{ github.repository }}:latest
+        echo "Pushing Docker images to GHCR: $VERSION_TAG and $LATEST_TAG"
+        docker push $VERSION_TAG
+        docker push $LATEST_TAG
