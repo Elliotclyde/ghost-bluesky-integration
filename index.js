@@ -56,7 +56,9 @@ const postPublishedConstraints = {
     "post.current.url": {
         presence: true,
         type: 'string',
-        url: true
+        url: {
+            allowLocal: true
+        }
     }
 }
 
