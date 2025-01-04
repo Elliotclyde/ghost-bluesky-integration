@@ -1,8 +1,8 @@
-const express = require('express')
-const commandLineArgs = require('command-line-args')
-const bodyParser = require('body-parser');
-const axios = require('axios');
-var validate = require("validate.js");
+import express from 'express';
+import commandLineArgs from 'command-line-args';
+import bodyParser from 'body-parser';
+import validate from "validate.js";
+import { createBlueskySession, createRecord } from './bluesky.js'
 
 const app = express()
 app.use(bodyParser.json());
@@ -66,7 +66,7 @@ app.post('/post-published', async (req, res) => {
     const validationErrors = validate(req.body, postPublishedConstraints);
     if (validationErrors) {
         res.status(400)
-        res.send({errors : validationErrors});
+        res.send({ errors: validationErrors });
     }
     else {
         const post = req?.body?.post?.current;
@@ -84,12 +84,12 @@ app.post('/post-published', async (req, res) => {
             }
         ]
         try {
-            const sessionToken = (await createBlueskySession()).data.accessJwt;
+            const sessionToken = (await createBlueskySession(options.blueskyidentifier,options.blueskypass)).data.accessJwt;
 
             try {
-                await createRecord(sessionToken, postText, linkFacets)
+                await createRecord(options.blueskyidentifier, sessionToken, postText, linkFacets)
                 res.send('Successfully posted to bluesky!')
-            } catch (e) { 
+            } catch (e) {
                 res.status(500)
                 console.log('Error creating post on bluesky ' + e.message)
                 res.send('Error creating post on bluesky');
@@ -107,46 +107,9 @@ function truncateString(str, num) {
     return str.length > num ? str.slice(0, num) + '...' : str;
 }
 
-
-const createBlueskySession = async () => {
-    const response = await axios.post('https://bsky.social/xrpc/com.atproto.server.createSession', {
-        identifier: options.blueskyidentifier,
-        password: options.blueskypass
-    }, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    return response;
-};
-
-
-const createRecord = async (token, text, linkFacets) => {
-    try {
-        const response = await axios.post('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
-            collection: 'app.bsky.feed.post',
-            repo: options.blueskyidentifier,
-            record: {
-                text: text,
-                createdAt: new Date().toISOString(),
-                facets: linkFacets
-            }
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        console.log(response.data);
-    } catch (error) {
-        console.error(error.response ? error.response.data : error.message);
-    }
-};
-
 const runApp = async () => {
     try {
-        await createBlueskySession();
+        await createBlueskySession(options.blueskyidentifier,options.blueskypass);
     } catch (e) {
         if (e?.response?.data?.message === 'Invalid identifier or password') {
             throw new Error(`Incorrect bluesky credentials for bluesky user ${options.blueskyidentifier}. Please check username and password.`)
