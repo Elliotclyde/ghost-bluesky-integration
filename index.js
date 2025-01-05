@@ -1,6 +1,6 @@
 import commandLineArgs from 'command-line-args';
-import { BlueskyClient } from './BlueskyClient.js'
-import { Server } from './server.js';
+import { BlueskyClient } from './src/BlueskyClient.js'
+import { Server } from './src/Server.js';
 
 
 const optionDefinitions = [

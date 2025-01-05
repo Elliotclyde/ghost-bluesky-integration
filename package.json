@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Integration between ghost CMS and bluesky",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "test"
   },
@@ -16,10 +16,12 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.7",
-    "chai": "^5.1.2",
     "command-line-args": "^6.0.0",
     "express": "^4.21.1",
-    "light-my-request": "^6.4.0",
     "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.2",
+    "light-my-request": "^6.4.0"
   }
 }

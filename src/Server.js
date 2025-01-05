@@ -30,8 +30,21 @@ const postPublishedConstraints = {
         presence: true,
         type: 'string',
         url: {
+            /* Allowing local for dev/test. This is the url on ghost of the post */
             allowLocal: true
         }
+    }
+}
+
+const createRecordResponseConstraints = {
+    "uri": {
+        presence: { allowEmpty: false },
+        type: 'string',
+        url: true
+    },
+    "cid": {
+        presence: { allowEmpty: false },
+        type: 'string'
     }
 }
 
@@ -69,7 +82,11 @@ export class Server {
                     const sessionToken = (await this.blueskyClient.createBlueskySession()).data.accessJwt;
 
                     try {
-                        await this.blueskyClient.createRecord(sessionToken, postText, linkFacets)
+                        const createRecordResponse = await this.blueskyClient.createRecord(sessionToken, postText, linkFacets)
+                        const validationErrors = validate(createRecordResponse, createRecordResponseConstraints);
+                        if (validationErrors) {
+                            throw new Error(JSON.stringify(validationErrors));
+                        }
                         res.send('Successfully posted to bluesky!')
                     } catch (e) {
                         res.status(500)
