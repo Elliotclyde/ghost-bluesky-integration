@@ -16,8 +16,8 @@ COPY index.js .
 EXPOSE 7969
 
 # Command to run the application, using the environment variables
-if [ $USETITLE = 'TRUE' ]; then
-    CMD node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS --usetitle
-else
-    CMD node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS
-fi
+CMD if [ $USETITLE = 'TRUE' ]; then \
+        node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS --usetitle \
+    else \
+        node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS \
+    fi
