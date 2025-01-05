@@ -6,19 +6,21 @@ import('chai').then(runTests)
 
 const { inject } = LightMyRequest;
 
+
+const blueskyClient = {
+    createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
+    createRecord() {
+        return {
+            uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
+            cid: 'asdf-asdf-asdf-asdf' 
+        }
+    }
+}
+
 function runTests(chai) {
 
     test('Sending correctly formatted POST request to /post-published should create POST', async (t) => {
 
-        const blueskyClient = {
-            createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
-            createRecord() {
-                return {
-                    uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
-                    cid: 'asdf-asdf-asdf-asdf' 
-                }
-            }
-        }
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
@@ -49,15 +51,6 @@ function runTests(chai) {
 
     test('Sending incorrectly formatted POST request to /post-published without title should return error', async (t) => {
 
-        const blueskyClient = {
-            createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
-            createRecord() {
-                return {
-                    uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
-                    cid: 'asdf-asdf-asdf-asdf' 
-                }
-            }
-        }
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
@@ -87,15 +80,6 @@ function runTests(chai) {
 
     test('Sending incorrectly formatted POST request to /post-published without excerpt should return error', async (t) => {
 
-        const blueskyClient = {
-            createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
-            createRecord() {
-                return {
-                    uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
-                    cid: 'asdf-asdf-asdf-asdf' 
-                }
-            }
-        }
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
@@ -125,15 +109,6 @@ function runTests(chai) {
 
     test('Sending incorrectly formatted POST request to /post-published without url should return error', async (t) => {
 
-        const blueskyClient = {
-            createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
-            createRecord() {
-                return {
-                    uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
-                    cid: 'asdf-asdf-asdf-asdf' 
-                }
-            }
-        }
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
@@ -163,15 +138,6 @@ function runTests(chai) {
 
     test('Sending incorrectly formatted POST request to /post-published with empty body should return error', async (t) => {
 
-        const blueskyClient = {
-            createBlueskySession() { return { data: { accessJwt: 'asdf-asdf-asdf-asdf' } } },
-            createRecord() {
-                return {
-                    uri: 'https://bsky.app/profile/jcsalterego.bsky.social/post/3lex6urqvj22c',
-                    cid: 'asdf-asdf-asdf-asdf' 
-                }
-            }
-        }
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
