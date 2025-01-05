@@ -54,3 +54,11 @@ services:
     restart: unless-stopped
     image: ghcr.io/elliotclyde/ghost-bluesky-integration:latest
 ```
+
+## Tests
+
+If you're contributing, you can run tests with node's built-in test runner:
+
+```
+node --test`
+```
