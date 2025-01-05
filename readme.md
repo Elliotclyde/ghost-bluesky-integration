@@ -57,8 +57,8 @@ services:
 
 ## Tests
 
-If you're contributing, you can run tests with node's built-in test runner:
+If you're contributing, you can run tests with node's built-in test runner by running the following command from the root of the project:
 
 ```
-node --test`
+node --test
 ```
