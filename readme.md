@@ -38,6 +38,7 @@ The Dockerfile takes your identifier and app password as environment variables:
 docker run --name ghost-bluesky-integration \
 -e IDENTIFIER=<your Bluesky identifier> \
 -e PASS=<your App Password> \
+-e USETITLE=<TRUE|FALSE> \
 -p 7969:7969 \
 --restart=unless-stopped \
 ghcr.io/elliotclyde/ghost-bluesky-integration:latest
@@ -53,6 +54,7 @@ services:
     environment:
       - IDENTIFIER=<your Bluesky identifier>
       - PASS=<your App Password>
+      - USETITLE=<TRUE|FALSE>
     ports:
       - 7969:7969
     restart: unless-stopped
