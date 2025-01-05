@@ -49,7 +49,7 @@ const createRecordResponseConstraints = {
 }
 
 export class Server {
-    constructor(blueskyClient) {
+    constructor(blueskyClient, useTitle) {
 
         this.blueskyClient = blueskyClient
 
@@ -65,7 +65,7 @@ export class Server {
             }
             else {
                 const post = req?.body?.post?.current;
-                const postText = truncateString(post.excerpt, blueskyMaxCharLength - (post.url.length + 2)) + "\n\n" + post.url;
+                const postText = truncateString(useTitle ? post.title : post.excerpt, blueskyMaxCharLength - (post.url.length + 2)) + "\n\n" + post.url;
                 const linkFacets = [
                     {
                         index: {

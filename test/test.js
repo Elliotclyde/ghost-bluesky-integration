@@ -19,12 +19,12 @@ const blueskyClient = {
 
 function runTests(chai) {
 
-    test('Sending correctly formatted POST request to /post-published should create POST', async (t) => {
+    test('Sending correctly formatted POST request to /post-published should create post using excerpt', async (t) => {
 
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
-        const server = new Server(blueskyClient)
+        const server = new Server(blueskyClient,false)
 
         const response = await inject(server.app, {
             method: 'POST',
@@ -47,6 +47,42 @@ function runTests(chai) {
         chai.expect(response.statusCode).to.equal(200);
         chai.assert.strictEqual(blueskyClient.createBlueskySession.mock.callCount(), 1);
         chai.assert.strictEqual(blueskyClient.createRecord.mock.callCount(), 1);
+        const testArgument = blueskyClient.createRecord.mock.calls[0].arguments[1];
+        chai.assert.strictEqual(testArgument, 'Test Excerpt\n\nhttps://test.com');
+
+    });
+    
+    test('Sending correctly formatted POST request to /post-published should create post using title', async (t) => {
+
+        t.mock.method(blueskyClient, 'createBlueskySession')
+        t.mock.method(blueskyClient, 'createRecord')
+
+        const server = new Server(blueskyClient,true)
+
+        const response = await inject(server.app, {
+            method: 'POST',
+            url: '/post-published',
+            headers: { 'Content-Type': 'application/JSON' },
+            body: JSON.stringify({
+                post:
+                {
+                    current:
+                    {
+                        title: 'Test Title',
+                        excerpt: 'Test Excerpt',
+                        url: 'https://test.com'
+                    }
+                }
+            })
+        });
+
+        chai.expect(response.payload).to.equal('Successfully posted to bluesky!');
+        chai.expect(response.statusCode).to.equal(200);
+        chai.assert.strictEqual(blueskyClient.createBlueskySession.mock.callCount(), 1);
+        chai.assert.strictEqual(blueskyClient.createRecord.mock.callCount(), 1);
+        const testArgument = blueskyClient.createRecord.mock.calls[0].arguments[1];
+        chai.assert.strictEqual(testArgument, 'Test Title\n\nhttps://test.com');
+
     });
 
     test('Sending incorrectly formatted POST request to /post-published without title should return error', async (t) => {
@@ -54,7 +90,7 @@ function runTests(chai) {
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
-        const server = new Server(blueskyClient)
+        const server = new Server(blueskyClient,false)
 
         const response = await inject(server.app, {
             method: 'POST',
@@ -83,7 +119,7 @@ function runTests(chai) {
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
-        const server = new Server(blueskyClient)
+        const server = new Server(blueskyClient,false)
 
         const response = await inject(server.app, {
             method: 'POST',
@@ -112,7 +148,7 @@ function runTests(chai) {
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
-        const server = new Server(blueskyClient)
+        const server = new Server(blueskyClient,false)
 
         const response = await inject(server.app, {
             method: 'POST',
@@ -141,7 +177,7 @@ function runTests(chai) {
         t.mock.method(blueskyClient, 'createBlueskySession')
         t.mock.method(blueskyClient, 'createRecord')
 
-        const server = new Server(blueskyClient)
+        const server = new Server(blueskyClient,false)
 
         const response = await inject(server.app, {
             method: 'POST',

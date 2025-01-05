@@ -6,7 +6,8 @@ import { Server } from './src/Server.js';
 const optionDefinitions = [
     { name: 'port', defaultOption: 7969, type: Number },
     { name: 'blueskyidentifier', alias: 'u', type: String },
-    { name: 'blueskypass', alias: 'p', type: String }
+    { name: 'blueskypass', alias: 'p', type: String }, 
+    { name: 'usetitle', alias: 't', type: Boolean  }
 ]
 
 const options = commandLineArgs(optionDefinitions)
@@ -27,6 +28,6 @@ if (!port) {
 }
 
 const blueskyClient = new BlueskyClient(options.blueskyidentifier, options.blueskypass);
-const server = new Server(blueskyClient);
+const server = new Server(blueskyClient, !!options.usetitle);
 
 server.start(port)

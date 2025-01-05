@@ -24,6 +24,10 @@ You can configure the port:
 
 Otherwise it will default to port 7969.
 
+By default it will use the Ghost post excerpt as the text of the bluesky post, then a link to the post. You can replace the excerpt with the title instead by adding this flag:
+
+`node .\index.js --blueskyidentifier 'dril.bsky.social'  --blueskypass 'myAppPass' --usetitle`
+
 Then add a custom integration and add the url `http://127.0.0.1:7969/post-published` to the ghost "post published" webhook.
 
 ### Docker
