@@ -11,13 +11,13 @@ RUN npm install
 
 # Copy the rest of the application code into the container
 COPY index.js .
+ADD src /usr/src/app/src
 
 # Expose port 7969
 EXPOSE 7969
 
-# Command to run the application, using the environment variables
-CMD if [ $USETITLE = 'TRUE' ]; then \
-        node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS --usetitle \
-    else \
-        node index.js --blueskyidentifier $IDENTIFIER --blueskypass $PASS \
-    fi
+# Copy the start script into the container
+COPY start.sh /usr/src/app
+
+# Command to run the application
+CMD "./start.sh"
