@@ -1,6 +1,6 @@
 {
   "name": "ghost-bluesky-integration",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Integration between ghost CMS and bluesky",
   "main": "index.js",
   "type": "module",
