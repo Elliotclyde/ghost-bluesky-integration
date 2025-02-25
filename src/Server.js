@@ -37,12 +37,11 @@ const postPublishedConstraints = {
 }
 
 const createRecordResponseConstraints = {
-    "uri": {
+    "data.uri": {
         presence: { allowEmpty: false },
-        type: 'string',
-        url: true
+        type: 'string'
     },
-    "cid": {
+    "data.cid": {
         presence: { allowEmpty: false },
         type: 'string'
     }

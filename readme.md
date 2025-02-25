@@ -28,7 +28,17 @@ By default it will use the Ghost post excerpt as the text of the bluesky post, t
 
 `node .\index.js --blueskyidentifier 'dril.bsky.social'  --blueskypass 'myAppPass' --usetitle`
 
-Then add a custom integration and add the url `http://127.0.0.1:7969/post-published` to the ghost "post published" webhook.
+After this you can make sure the integration side is working with: 
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"post":{"current":{"excerpt":"test post","title":"test post","url":"https://test.test"}}}' http://127.0.0.1:7969/post-published
+```
+
+(This will post these test details to bluesky so you may want to delete the post afterwards).
+
+### In Ghost:
+
+Add a custom integration and add the url `http://127.0.0.1:7969/post-published` to the ghost "post published" webhook.
 
 ### Docker
 
